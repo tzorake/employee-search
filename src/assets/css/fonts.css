@@ -1,0 +1,23 @@
+/* Regular Montserrat Font */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('font/Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Italic Montserrat Font */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('font/Montserrat/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+/* Bold Montserrat Font */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('font/Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
