@@ -14,7 +14,7 @@ import FFindEmployeeForm from "./components/FFindEmployeeForm.vue";
 
 <style scoped>
 .logo {
-  color: #E31F24;
+  color: var(--red-100);
   font-size: 32px;
   font-style: normal;
   font-weight: 700;
@@ -37,7 +37,7 @@ import FFindEmployeeForm from "./components/FFindEmployeeForm.vue";
   gap: 2rem;
   padding: 3rem;
   height: calc(100% - 6rem);
-  color: #333;
+  color: var(--grey-850);
 }
 
 

@@ -145,16 +145,16 @@ onMounted(() => {
   flex-direction: column;
   gap: 1rem;
   padding: 1.25rem;
-  border-right: 1px solid #dededd;
-  background-color: #fdfdfd;
+  border-right: 1px solid var(--grey-400);
+  background-color: var(--grey-500);
 }
 
 .placeholder {
-  color: #76787d;
+  color: var(--grey-200);
 }
 
 .error {
-  color: #e31f24;
+  color: var(--red-100);
 }
 
 .title {
@@ -169,7 +169,7 @@ onMounted(() => {
     flex-grow: 1;
     padding: 1rem 1.5rem;
     border-radius: 0.5rem;
-    border: 1.5px solid #e9ecef;
+    border: 1.5px solid var(--grey-600);
   }
 }
 
@@ -185,20 +185,20 @@ onMounted(() => {
     overflow-x: hidden;
 
     &::-webkit-scrollbar-track {
-      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      -webkit-box-shadow: inset 0 0 6px var(--grey-150);
       border-radius: 10px;
-      background-color: #f5f5f5;
+      background-color: var(--grey-700);
     }
 
     &::-webkit-scrollbar {
       width: 12px;
-      background-color: #f5f5f5;
+      background-color: var(--grey-700);
     }
 
     &::-webkit-scrollbar-thumb {
       border-radius: 10px;
-      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-      background-color: #555;
+      -webkit-box-shadow: inset 0 0 6px var(--grey-150);
+      background-color: var(--grey-800);
     }
   }
 }
@@ -206,9 +206,9 @@ onMounted(() => {
 .loader {
   width: 50px;
   height: 50px;
-  border: 8px solid #e3e3e3;
+  border: 8px solid var(--grey-900);
   border-radius: 50%;
-  border-top-color: #555;
+  border-top-color: var(--grey-800);
   animation: spin 1s ease infinite;
 
   &-container {

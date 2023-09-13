@@ -24,7 +24,7 @@ const selectedUser = ref();
 .find-employee-form {
   display: flex;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 10px 0px var(--grey-250);
 }
 
 .content {
@@ -38,7 +38,7 @@ const selectedUser = ref();
   justify-content: center;
   align-items: center;
   word-wrap: normal;
-  color: #76787D;
+  color: var(--grey-200);
 }
 
 .text {

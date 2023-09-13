@@ -24,11 +24,15 @@ const props = defineProps({
   width: 5rem;
   aspect-ratio: 1/1;
   object-fit: cover;
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid var(--grey-100);
 }
 
 .username {
   font-weight: bold;
+}
+
+.email {
+  color: var(--grey-200);
 }
 
 .info {
@@ -43,12 +47,12 @@ const props = defineProps({
 
 .card {
   display: flex;
-  border: 1.5px solid var(--all-colors-gray-gray-200, #e9ecef);
+  border: 1.5px solid var(--all-colors-gray-gray-200, var(--grey-300));
   border-radius: 10px;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 .selected > .info {
-  background-color: #e0e0e0;
+  background-color: var(--grey-100);
 }
 </style>

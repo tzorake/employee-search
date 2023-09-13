@@ -37,7 +37,7 @@ const props = defineProps({
 
 .image {
   width: 100%;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--grey-100);
 
   &-container {
     width: calc(50% - 2rem);
@@ -57,7 +57,7 @@ const props = defineProps({
 }
 
 .text {
-  color: #76787D;
+  color: var(--grey-200);
 }
 
 .contacts {
