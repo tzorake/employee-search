@@ -7,33 +7,46 @@
         class="search__input"
         placeholder="Введите id или имя"
         v-model="rawSearchText"
+        :disabled="isLoading"
       />
     </div>
 
     <div class="results">
       <p class="title">Результаты</p>
-      <p class="placeholder" v-if="!rawSearchText">начните поиск</p>
-      <p class="placeholder" v-else-if="searchResults.length === 0">
-        ничего не найдено
-      </p>
-      <div class="list-container" v-else>
-        <div class="list">
-          <FCard
-            v-for="user in searchResults"
-            :key="user.username"
-            :user="user"
-            :class="{ selected: modelValue?.username === user.username }"
-            @click="$emit('update:modelValue', user)"
-          >
-          </FCard>
+      <template v-if="isLoading">
+        <div class="loader-container">
+          <div class="loader"></div>
         </div>
-      </div>
+      </template>
+      <template v-else>
+        <template v-if="!isErrorOccured">
+          <p class="placeholder" v-if="!rawSearchText">Начните поиск</p>
+          <p class="placeholder" v-else-if="searchResults.length === 0">
+            Ничего не найдено
+          </p>
+          <div class="list-container" v-else>
+            <div class="list">
+              <FCard
+                v-for="user in searchResults"
+                :key="user.username"
+                :user="user"
+                :class="{ selected: modelValue?.username === user.username }"
+                @click="$emit('update:modelValue', user)"
+              >
+              </FCard>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <p class="error">{{ errorString }}</p>
+        </template>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, defineProps } from "vue";
+import { computed, ref, defineProps, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import FCard from "./FCard.vue";
 
@@ -44,7 +57,37 @@ const props = defineProps({
   },
 });
 
+let iota = 0;
+const Error = {};
+Error.NoError = iota++;
+Error.ServerError = iota++;
+Error.InvalidRequest = iota++
+
+const errorString = ref("");
+const errorCode = ref(Error.NoError);
+const isErrorOccured = computed(() => errorCode.value !== Error.NoError);
+
+const isLoading = ref(false);
+
 const rawSearchText = ref("");
+const isInputValid = computed(() => {
+  return rawSearchText.value.length === 0 || !/[^\w]/.test(rawSearchText.value);
+});
+
+watch(isInputValid, (newValue) => {
+  if (!newValue) {
+    if (errorCode.value === Error.NoError) {
+      errorString.value = "Неверный запрос";
+      errorCode.value = Error.InvalidRequest;
+    }
+  }
+  else {
+    if (errorCode.value === Error.InvalidRequest) {
+      errorString.value = "";
+      errorCode.value = Error.NoError;
+    }
+  }
+});
 
 const searchEntries = computed(() => {
   return rawSearchText.value
@@ -61,9 +104,6 @@ const filteredEntries = computed(() => {
 
 const searchResults = computed(() => {
   const users = store.state.users;
-  if (users.length === 0) {
-    store.dispatch("fetchUsers");
-  }
 
   // Get users and filter unique non-undefined values
   const objects = [
@@ -81,6 +121,22 @@ const searchResults = computed(() => {
 
   return objects;
 });
+
+onMounted(() => {
+  if (store.state.users.length === 0) {
+    isLoading.value = true;
+    store
+      .dispatch("fetchUsers")
+      .then(() => {})
+      .catch((error) => {
+        errorString.value = "Ошибка сервера";
+        errorCode.value = Error.ServerError;
+      })
+      .finally(() => {
+        isLoading.value = false;
+      });
+  }
+});
 </script>
 
 <style scoped lang="scss">
@@ -95,6 +151,10 @@ const searchResults = computed(() => {
 
 .placeholder {
   color: #76787d;
+}
+
+.error {
+  color: #e31f24;
 }
 
 .title {
@@ -140,6 +200,27 @@ const searchResults = computed(() => {
       -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
       background-color: #555;
     }
+  }
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 8px solid #e3e3e3;
+  border-radius: 50%;
+  border-top-color: #555;
+  animation: spin 1s ease infinite;
+
+  &-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>
