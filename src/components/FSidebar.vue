@@ -71,7 +71,7 @@ const isLoading = ref(false);
 
 const rawSearchText = ref("");
 const isInputValid = computed(() => {
-  return rawSearchText.value.length === 0 || !/[^\w]/.test(rawSearchText.value);
+  return rawSearchText.value.length === 0 || !/[^\w\s,]/.test(rawSearchText.value);
 });
 
 watch(isInputValid, (newValue) => {
