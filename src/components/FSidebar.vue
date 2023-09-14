@@ -142,6 +142,7 @@ onMounted(() => {
   flex-direction: column;
   gap: 1rem;
   padding: 1.5rem;
+  padding-left: 1rem;
   border-right: 1px solid var(--grey-400);
 }
 

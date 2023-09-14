@@ -3,7 +3,7 @@
     <img :src="props.user.image" class="photo" alt="image" />
     <div class="info">
       <div class="username">{{ props.user.username }}</div>
-      <div class="email">{{ props.user.email }}</div>
+      <div class="email" :title="props.user.email">{{ props.user.email }}</div>
     </div>
   </div>
 </template>
@@ -47,7 +47,7 @@ const props = defineProps({
   padding: 1rem;
   transition: background-color 0.3s;
   border-radius: 0 10px 10px 0;
-  width: 10rem;
+  overflow: hidden;
 }
 
 .card {
@@ -55,6 +55,8 @@ const props = defineProps({
   border: 1.5px solid var(--all-colors-gray-gray-200, var(--grey-300));
   border-radius: 10px;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  font-size: 0.875rem;
+  width: 15rem;
 }
 
 .selected > .info {
