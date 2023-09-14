@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import { computed, ref, defineProps, onMounted, watch } from "vue";
+import { computed, ref, defineProps, defineEmits, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import FCard from "./FCard.vue";
 
@@ -56,6 +56,7 @@ const props = defineProps({
     type: Object,
   },
 });
+const emit = defineEmits(["update:modelValue"]);
 
 let iota = 0;
 const Error = {};
@@ -119,6 +120,12 @@ const searchResults = computed(() => {
 
   return users;
 });
+
+watch(searchResults, (newValue) => {
+  if (props.modelValue && !newValue.find(item => item.id === props.modelValue.id)) {
+    emit("update:modelValue", undefined);
+  }
+})
 
 onMounted(() => {
   if (store.state.users.length === 0) {
