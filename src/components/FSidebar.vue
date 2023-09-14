@@ -25,7 +25,7 @@
             Ничего не найдено
           </p>
           <div class="list-container" v-else>
-            <div class="list">
+            <TransitionGroup name="list" class="list" tag="div">
               <FCard
                 v-for="user in searchResults"
                 :key="user.username"
@@ -34,8 +34,14 @@
                 @click="$emit('update:modelValue', user)"
               >
               </FCard>
-            </div>
+            </TransitionGroup>
           </div>
+
+          <!-- <TransitionGroup name="list" tag="ul">
+            <li v-for="item in items" :key="item">
+              {{ item }}
+            </li>
+          </TransitionGroup> -->
         </template>
         <template v-else>
           <p class="error">{{ errorString }}</p>
@@ -72,7 +78,9 @@ const isLoading = ref(false);
 
 const rawSearchText = ref("");
 const isInputValid = computed(() => {
-  return rawSearchText.value.length === 0 || !/[^\w\s,]/.test(rawSearchText.value);
+  return (
+    rawSearchText.value.length === 0 || !/[^\w\s,]/.test(rawSearchText.value)
+  );
 });
 
 watch(isInputValid, (newValue) => {
@@ -81,8 +89,7 @@ watch(isInputValid, (newValue) => {
       errorString.value = "Неверный запрос";
       errorCode.value = Error.InvalidRequest;
     }
-  }
-  else {
+  } else {
     if (errorCode.value === Error.InvalidRequest) {
       errorString.value = "";
       errorCode.value = Error.NoError;
@@ -122,10 +129,13 @@ const searchResults = computed(() => {
 });
 
 watch(searchResults, (newValue) => {
-  if (props.modelValue && !newValue.find(item => item.id === props.modelValue.id)) {
+  if (
+    props.modelValue &&
+    !newValue.find((item) => item.id === props.modelValue.id)
+  ) {
     emit("update:modelValue", undefined);
   }
-})
+});
 
 onMounted(() => {
   if (store.state.users.length === 0) {
@@ -165,7 +175,9 @@ onMounted(() => {
   font-weight: bold;
 }
 
-.title, .placeholder, .error {
+.title,
+.placeholder,
+.error {
   margin: 1rem 0.5rem;
 }
 
@@ -181,14 +193,18 @@ onMounted(() => {
     min-width: 10rem;
     margin: 0.5rem;
     margin-right: 0;
+    transition: all 0.2s ease-out;
+
+    &:focus {
+      border: 1.5px solid black;
+      outline: 0;
+    }
   }
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  // gap: 1rem;
-  // padding-right: 0.5rem;
 
   > * {
     margin: 0.25rem 0.5rem;
@@ -215,6 +231,17 @@ onMounted(() => {
       -webkit-box-shadow: inset 0 0 6px var(--grey-150);
       background-color: var(--grey-800);
     }
+  }
+
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.3s ease;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    opacity: 0;
+    transform: translateX(2rem);
   }
 }
 

@@ -52,11 +52,17 @@ const props = defineProps({
 
 .card {
   display: flex;
-  border: 1.5px solid var(--all-colors-gray-gray-200, var(--grey-300));
+  border: 1.5px solid var(--grey-300);
   border-radius: 10px;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   font-size: 0.875rem;
   width: 15rem;
+  transition: all 0.3s;
+
+  &:hover {
+    border: 1px solid var(--grey-100);
+    background-color: var(--grey-700);
+  }
 }
 
 .selected > .info {
