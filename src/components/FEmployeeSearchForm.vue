@@ -1,5 +1,5 @@
 <template>
-  <div class="find-employee-form">
+  <div class="employee-search-form">
     <FSidebar v-model="selectedUser"></FSidebar>
     <div class="content">
       <FCardView :user="selectedUser" v-if="selectedUser"></FCardView>
@@ -21,7 +21,7 @@ const selectedUser = ref();
 </script>
 
 <style scoped lang="scss">
-.find-employee-form {
+.employee-search-form {
   display: flex;
   border-radius: 10px;
   background-color: var(--grey-500);

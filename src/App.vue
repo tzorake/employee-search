@@ -27,7 +27,7 @@ import FEmployeeSearchForm from "./components/FEmployeeSearchForm.vue";
   align-items: center;
 }
 
-.find-employee-form {
+.employee-search-form {
   flex-grow: 1;
 }
 
