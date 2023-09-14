@@ -33,6 +33,10 @@ const props = defineProps({
 
 .email {
   color: var(--grey-200);
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .info {
@@ -43,6 +47,7 @@ const props = defineProps({
   padding: 1rem;
   transition: background-color 0.3s;
   border-radius: 0 10px 10px 0;
+  width: 10rem;
 }
 
 .card {

@@ -61,7 +61,7 @@ let iota = 0;
 const Error = {};
 Error.NoError = iota++;
 Error.ServerError = iota++;
-Error.InvalidRequest = iota++
+Error.InvalidRequest = iota++;
 
 const errorString = ref("");
 const errorCode = ref(Error.NoError);
@@ -102,11 +102,9 @@ const filteredEntries = computed(() => {
   };
 });
 
+// Get users and filter unique non-undefined values
 const searchResults = computed(() => {
-  const users = store.state.users;
-
-  // Get users and filter unique non-undefined values
-  const objects = [
+  const users = [
     ...filteredEntries.value.id.map((entry) =>
       store.getters.getUserById(entry)
     ),
@@ -119,7 +117,7 @@ const searchResults = computed(() => {
       (value, index, array) => array.map((x) => x.id).indexOf(value.id) == index
     );
 
-  return objects;
+  return users;
 });
 
 onMounted(() => {
@@ -127,7 +125,6 @@ onMounted(() => {
     isLoading.value = true;
     store
       .dispatch("fetchUsers")
-      .then(() => {})
       .catch((error) => {
         errorString.value = "Ошибка сервера";
         errorCode.value = Error.ServerError;
@@ -144,9 +141,8 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1.25rem;
+  padding: 1.5rem;
   border-right: 1px solid var(--grey-400);
-  background-color: var(--grey-500);
 }
 
 .placeholder {
@@ -161,6 +157,10 @@ onMounted(() => {
   font-weight: bold;
 }
 
+.title, .placeholder, .error {
+  margin: 1rem 0.5rem;
+}
+
 .search {
   display: flex;
   flex-direction: column;
@@ -170,14 +170,21 @@ onMounted(() => {
     padding: 1rem 1.5rem;
     border-radius: 0.5rem;
     border: 1.5px solid var(--grey-600);
+    min-width: 10rem;
+    margin: 0.5rem;
+    margin-right: 0;
   }
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding-right: 0.5rem;
+  // gap: 1rem;
+  // padding-right: 0.5rem;
+
+  > * {
+    margin: 0.25rem 0.5rem;
+  }
 
   &-container {
     height: 300px;

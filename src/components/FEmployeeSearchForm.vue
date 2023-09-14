@@ -20,10 +20,11 @@ import FCardView from "./FCardView.vue";
 const selectedUser = ref();
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .find-employee-form {
   display: flex;
   border-radius: 10px;
+  background-color: var(--grey-500);
   box-shadow: 0px 0px 10px 0px var(--grey-250);
 }
 

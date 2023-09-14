@@ -4,15 +4,15 @@
       <span class="logo">Жилфонд</span>
       <span class="user">Пользователь</span>
     </div>
-    <FFindEmployeeForm class="form"></FFindEmployeeForm>
+    <FEmployeeSearchForm></FEmployeeSearchForm>
   </div>
 </template>
 
 <script setup>
-import FFindEmployeeForm from "./components/FFindEmployeeForm.vue";
+import FEmployeeSearchForm from "./components/FEmployeeSearchForm.vue";
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .logo {
   color: var(--red-100);
   font-size: 32px;
@@ -27,7 +27,7 @@ import FFindEmployeeForm from "./components/FFindEmployeeForm.vue";
   align-items: center;
 }
 
-.form {
+.find-employee-form {
   flex-grow: 1;
 }
 
