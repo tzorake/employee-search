@@ -10,7 +10,7 @@ export default createStore({
       return state.users.find(user => user.id == id)
     },
     getUserByName: (state) => (name) => {
-      return state.users.find(user => user.username === name)
+      return state.users.find(user => user.username.toLowerCase() === name.toLowerCase())
     },
   },
   mutations: {
