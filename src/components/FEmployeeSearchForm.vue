@@ -1,15 +1,22 @@
 <template>
-  <div class="employee-search-form">
-    <FSidebar v-model="selectedUser"></FSidebar>
-    <div class="content">
-      <FCardView :user="selectedUser" v-if="selectedUser"></FCardView>
+  <main class="employee-search-form">
+    <FSidebar v-model="selectedUser" />
+    <div
+      class="content"
+      :class="{
+        'content--selected-user': selectedUser,
+      }"
+    >
+      <FCardView
+        :user="selectedUser"
+        @drop-select="selectedUser = undefined"
+        v-if="selectedUser"
+      ></FCardView>
       <div class="placeholder" v-else>
-        <span class="text">
-          Выберите сотрудника, чтобы посмотреть его профиль
-        </span>
+        <span class="text"> Выберите сотрудника, чтобы посмотреть его профиль </span>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -22,15 +29,29 @@ const selectedUser = ref();
 
 <style scoped lang="scss">
 .employee-search-form {
+  position: relative;
   display: flex;
+  flex-grow: 1;
   border-radius: 10px;
   background-color: var(--grey-500);
   box-shadow: 0px 0px 10px 0px var(--grey-250);
 }
 
 .content {
+  position: relative;
   display: flex;
   flex-grow: 1;
+  height: 100%;
+  overflow: hidden;
+
+  @media (max-width: 1050px) {
+    position: absolute;
+    display: none;
+  }
+
+  &--selected-user {
+    display: flex;
+  }
 }
 
 .placeholder {

@@ -1,18 +1,18 @@
 <template>
-  <div class="sidebar">
+  <aside class="sidebar">
     <div class="search">
       <p class="title">Поиск сотрудников</p>
       <input
         type="text"
         class="search__input"
-        placeholder="Введите id или имя"
+        placeholder="Введите ID или Имя"
         v-model="rawSearchText"
         :disabled="isLoading"
       />
     </div>
 
+    <p class="title">Результаты</p>
     <div class="results">
-      <p class="title">Результаты</p>
       <template v-if="isLoading">
         <div class="loader-container">
           <div class="loader"></div>
@@ -21,11 +21,9 @@
       <template v-else>
         <template v-if="!isErrorOccured">
           <p class="placeholder" v-if="!rawSearchText">Начните поиск</p>
-          <p class="placeholder" v-else-if="searchResults.length === 0">
-            Ничего не найдено
-          </p>
-          <div class="list-container" v-else>
-            <TransitionGroup name="list" class="list" tag="div">
+          <p class="placeholder" v-else-if="searchResults.length === 0">Ничего не найдено</p>
+          <div class="list-container">
+            <TransitionGroup mode="out-in" name="list" class="list" tag="div">
               <FCard
                 v-for="user in searchResults"
                 :key="user.username"
@@ -36,19 +34,13 @@
               </FCard>
             </TransitionGroup>
           </div>
-
-          <!-- <TransitionGroup name="list" tag="ul">
-            <li v-for="item in items" :key="item">
-              {{ item }}
-            </li>
-          </TransitionGroup> -->
         </template>
         <template v-else>
           <p class="error">{{ errorString }}</p>
         </template>
       </template>
     </div>
-  </div>
+  </aside>
 </template>
 
 <script setup>
@@ -78,9 +70,7 @@ const isLoading = ref(false);
 
 const rawSearchText = ref("");
 const isInputValid = computed(() => {
-  return (
-    rawSearchText.value.length === 0 || !/[^\w\s,]/.test(rawSearchText.value)
-  );
+  return rawSearchText.value.length === 0 || !/[^\w\s,]/.test(rawSearchText.value);
 });
 
 watch(isInputValid, (newValue) => {
@@ -99,10 +89,12 @@ watch(isInputValid, (newValue) => {
 
 const searchEntries = computed(() => {
   return rawSearchText.value
+    .replaceAll(" ", ",")
     .split(",")
     .map((entry) => entry.trim())
     .filter((entry) => entry);
 });
+
 const filteredEntries = computed(() => {
   return {
     id: searchEntries.value.filter((entry) => /^\d+$/.test(entry)),
@@ -113,26 +105,17 @@ const filteredEntries = computed(() => {
 // Get users and filter unique non-undefined values
 const searchResults = computed(() => {
   const users = [
-    ...filteredEntries.value.id.map((entry) =>
-      store.getters.getUserById(entry)
-    ),
-    ...filteredEntries.value.name.map((entry) =>
-      store.getters.getUserByName(entry)
-    ),
+    ...filteredEntries.value.id.map((entry) => store.getters.getUserById(entry)),
+    ...filteredEntries.value.name.map((entry) => store.getters.getUserByName(entry)),
   ]
     .filter((item) => item)
-    .filter(
-      (value, index, array) => array.map((x) => x.id).indexOf(value.id) == index
-    );
+    .filter((value, index, array) => array.map((x) => x.id).indexOf(value.id) == index);
 
   return users;
 });
 
 watch(searchResults, (newValue) => {
-  if (
-    props.modelValue &&
-    !newValue.find((item) => item.id === props.modelValue.id)
-  ) {
+  if (props.modelValue && !newValue.find((item) => item.id === props.modelValue.id)) {
     emit("update:modelValue", undefined);
   }
 });
@@ -143,6 +126,7 @@ onMounted(() => {
     store
       .dispatch("fetchUsers")
       .catch((error) => {
+        console.warn(error);
         errorString.value = "Ошибка сервера";
         errorCode.value = Error.ServerError;
       })
@@ -157,10 +141,26 @@ onMounted(() => {
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1.5rem;
-  padding-left: 1rem;
   border-right: 1px solid var(--grey-400);
+  background-color: white;
+  width: 400px;
+  padding: 0.75rem;
+  flex-shrink: 0;
+  border-radius: 10px 0 0 10px;
+  overflow: auto;
+  @media (max-width: 1050px) {
+    border-radius: 10px;
+    width: calc(100% - 1.5rem);
+    border-right: none;
+  }
+}
+
+.results {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
 }
 
 .placeholder {
@@ -192,7 +192,6 @@ onMounted(() => {
     border: 1.5px solid var(--grey-600);
     min-width: 10rem;
     margin: 0.5rem;
-    margin-right: 0;
     transition: all 0.2s ease-out;
 
     &:focus {
@@ -205,15 +204,21 @@ onMounted(() => {
 .list {
   display: flex;
   flex-direction: column;
+  padding-bottom: 2rem;
+  gap: 0.75rem;
 
   > * {
-    margin: 0.25rem 0.5rem;
+    margin: 0 0.5rem;
   }
 
   &-container {
-    height: 300px;
     overflow-y: auto;
     overflow-x: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
 
     &::-webkit-scrollbar-track {
       -webkit-box-shadow: inset 0 0 6px var(--grey-150);

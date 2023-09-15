@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
-    <div class="header">
-      <span class="logo">Жилфонд</span>
+  <div class="app">
+    <header class="header">
+      <a class="logo">Жилфонд</a>
       <span class="user">Пользователь</span>
-    </div>
+    </header>
     <FEmployeeSearchForm></FEmployeeSearchForm>
   </div>
 </template>
@@ -13,6 +13,23 @@ import FEmployeeSearchForm from "./components/FEmployeeSearchForm.vue";
 </script>
 
 <style scoped lang="scss">
+* {
+  box-sizing: border-box;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 3rem;
+  height: 100vh;
+  color: var(--grey-850);
+  @media (max-width: 1050px) {
+    padding: 1.5rem;
+    height: 90vh;
+  }
+}
+
 .logo {
   color: var(--red-100);
   font-size: 32px;
@@ -30,15 +47,4 @@ import FEmployeeSearchForm from "./components/FEmployeeSearchForm.vue";
 .employee-search-form {
   flex-grow: 1;
 }
-
-.container {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  padding: 3rem;
-  height: calc(100% - 6rem);
-  color: var(--grey-850);
-}
-
-
 </style>

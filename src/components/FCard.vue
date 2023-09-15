@@ -52,14 +52,23 @@ const props = defineProps({
 
 .card {
   display: flex;
+  cursor: pointer;
+  width: calc(100% - 1rem);
   border: 1.5px solid var(--grey-300);
   border-radius: 10px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
   font-size: 0.875rem;
-  width: 15rem;
   transition: all 0.3s;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
-  &:hover {
+  &:hover,
+  &:active {
     border: 1px solid var(--grey-100);
     background-color: var(--grey-700);
   }
